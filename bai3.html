@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body style="background-color:ghostwhite" >
+<h1>Điền thông tin</h1>
+<div class="form">
+    <div class="form-luan">
+        <label for="luan1" class="form-label">Mã sổ :</label>
+        <input id="MaSo" type="text" class="form-input" style="margin-left: 105px">
+        <div class="error-message"></div>
+    </div>
+    <div class="form-luan">
+        <label for="luan2" class="form-label">Loại tiết kiệm:</label>
+        <input id="LoaiTietKiem" type="text" class="form-input" style="margin-left: 60px">
+        <div class="error-message"></div>
+    </div>
+    <div class="form-luan">
+        <label for="luan3" class="form-label">Họ tên khách hàng:</label>
+        <input id="HoTenKhachHang" type="text" class="form-input" style="margin-left: 30px" >
+        <div class="error-message"></div>
+    </div>
+    <div class="form-luan">
+        <label for="luan4" class="form-label">Chứng minh nhân dân:</label>
+        <input id="ChungMinhNhanDan" type="number" class="form-input" style="margin-left: 10px" >
+        <div class="error-message"></div>
+    </div>
+    <div class="form-luan">
+        <label for="luan5" class="form-label">Ngày mở sổ:</label>
+        <input id="NgayMoSo" type="text" class="form-input" style="margin-left: 75px" >
+        <div class="error-message"></div>
+    </div>
+    <div class="form-luan">
+        <label for="luan6" class="form-label">Số tiền gửi:</label>
+        <input id="SoTienGui" type="number" class="form-input" style="margin-left: 84px" >
+        <div class="error-message"></div>
+    </div>
+    <div>
+        <input id="index" type="hidden">
+    </div>
+
+    <button id="add" onclick="addNewLuan()" style="background: chartreuse">Add New</button>
+    <h1>Thông tin sổ tiết kiệm</h1>
+    <div>
+
+        <table border="1px" cellpadding="10" cellspacing="10" id="tableContent" >
+
+            <tr>
+                <th>Mã sổ</th>
+                <th>Loại tiết kiệm</th>
+                <th>Họ tên khách hàng</th>
+                <th>Chúng minh nhân dân </th>
+                <th>Ngày mở sổ </th>
+                <th>Số tiền gửi</th>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    /*function inputString() {
+        let userInput = prompt("Nhập chuỗi (tối đa 5 ký tự):");
+        // Kiểm tra độ dài của chuỗi nhập vào
+        if (userInput.length > 5) {
+            alert("Chuỗi quá dài! Vui lòng nhập lại.");
+            return inputString(); // Yêu cầu nhập lại nếu chuỗi quá dài
+        }
+        return userInput;
+    }
+
+    let input = inputString();
+    document.write("Chuỗi nhập vào:", input);*/
+    function resetInput() {
+        document.getElementById("MaSo").value=""
+        document.getElementById("LoaiTietKiem").value=""
+        document.getElementById("HoTenKhachHang").value=""
+        document.getElementById("ChungMinhNhanDan").value=""
+        document.getElementById("NgayMoSo").value=""
+        document.getElementById("SoTienGui").value=""
+    }
+
+    function validateInput() {
+
+        let formElement = document.querySelector(".form")
+        let inputElement = formElement.querySelectorAll(".form-input")
+        for (let i=0;i<inputElement.length;i++) {
+            if (inputElement[i].value === ""){
+                inputElement[i].parentElement.querySelector(".error-message").innerText = `Điền thông tin ${inputElement[i].id}`
+            }else {
+                inputElement[i].parentElement.querySelector(".error-message").innerText = ""
+            }
+        }
+    }
+    function addNewLuan() {
+        validateInput()
+        let formElement = document.querySelector(".form")
+        let errorElement = formElement.querySelectorAll(".error-message")
+        let arrErrorElement = []
+        for (let i = 0; i < errorElement.length; i++) {
+            arrErrorElement.push(errorElement[i].innerText)
+        }
+        let checkErrorElement = arrErrorElement.every(value => value === "")
+        if (checkErrorElement) {
+
+            let luan1 = document.getElementById("MaSo").value
+            let luan2 = document.getElementById("LoaiTietKiem").value
+            let luan3 = document.getElementById("HoTenKhachHang").value
+            let luan4 = document.getElementById("ChungMinhNhanDan").value
+            let luan5 = document.getElementById("NgayMoSo").value
+            let luan6 = document.getElementById("SoTienGui").value
+            let listProduct = localStorage.getItem("listProduct") ? JSON.parse(localStorage.getItem("listProduct")) : []
+            listProduct.push({
+                luan1: luan1,
+                luan2: luan2,
+                luan3: luan3,
+                luan4: luan4,
+                luan5: luan5,
+                luan6: luan6,
+            })
+            localStorage.setItem("listProduct", JSON.stringify(listProduct))
+            render()
+            resetInput()
+        }
+    }
+    function render() {
+        let listProduct = localStorage.getItem("listProduct") ? JSON.parse(localStorage.getItem("listProduct")) : []
+        let product = `<tr>
+                             <th>ID</th>
+                            <th>Mã sổ</th>
+                            <th>Loại tiết kiệm</th>
+                            <th>Họ tên khách hàng </th>
+                             <th>Chứng minh nhân dân </th>
+                             <th>Ngày mở sổ </th>
+                             <th>Số tiền gửi</th>
+                              <th>chức năng</th>
+                   </tr>`
+        listProduct.map((value,index)=> {
+            product += `<tr>
+           <td>${index+1}</td>
+          <td>${value.luan1}</td>
+          <td>${value.luan2}</td>
+          <td>${value.luan3}</td>
+          <td>${value.luan4}</td>
+          <td>${value.luan5}</td>
+          <td>${value.luan6}</td>
+
+             <td>
+               <button onclick="editProduct(${index})">edit</button>
+               <button onclick="deleteProduct(${index})">delete</button>
+             </td>
+        </tr>`
+        })
+        document.getElementById("tableContent").innerHTML = product
+    }
+    function deleteProduct(index) {
+        let listProduct = localStorage.getItem("listProduct") ? JSON.parse(localStorage.getItem("listProduct")) : []
+        if (confirm("có chắc là xóa không ?")){
+            listProduct.splice(index,1)
+        }
+        localStorage.setItem("listProduct" , JSON.stringify(listProduct))
+        render()
+    }
+
+</script>
+</body>
+</html>

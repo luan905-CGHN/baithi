@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function trungBingCong(num1, den1, num2, den2) {
+        if (den1 === 0 || den2 === 0) {
+            return false;
+        }
+        return num1 * den2 === num2 * den1;
+    }
+    function main() {
+        let num1 = parseInt(prompt("Nhập tử số của phân số thứ nhất: "));
+        let den1 = parseInt(prompt("Nhập mẫu số của phân số thứ nhất (khác 0): "));
+
+        let num2 = parseInt(prompt("Nhập tử số của phân số thứ hai: "));
+        let den2 = parseInt(prompt("Nhập mẫu số của phân số thứ hai (khác 0): "));
+
+        if (trungBingCong(num1, den1, num2, den2)) {
+            document.write("Hai phân số bằng nhau.");
+        } else {
+            document.write("Hai phân số không bằng nhau.");
+        }
+    }
+    main();
+</script>
+</body>
+</html>
